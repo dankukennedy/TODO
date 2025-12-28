@@ -23,7 +23,7 @@ interface TodoListProps {
   handleEditChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-// BLOCK 3: Declares the TodoList Component
+
 // BLOCK 3: Declares the TodoList Component
 const TodoList: React.FC<TodoListProps> = ({
   tasks,

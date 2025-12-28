@@ -45,7 +45,7 @@ const App: React.FC = () => {
 
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3001/tasks/${id}`);
+      await axios.delete<Task>(`http://localhost:3001/tasks/${id}`);
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -71,7 +71,7 @@ const App: React.FC = () => {
   // UPDATED: Accepts id, content, title to match TodoList's expected signature
   const startEditing = (id: string, content: string, title: string) => {
     setEditingTaskId(id);
-    setEditingTitle(title); 
+    setEditingTitle(title);
     setEditingContent(content || "");
   }
 
