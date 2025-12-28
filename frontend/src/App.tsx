@@ -17,8 +17,12 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get<Task[]>('http://localhost:3001/tasks');
+        const response = await axios.get<Task[]>('http://localhost:3000/api/tasks');
+        if (Array.isArray(response.data)) {
         setTasks(response.data);
+      } else {
+        setTasks([]); // Fallback to empty array
+      }
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -31,7 +35,7 @@ const App: React.FC = () => {
     console.log("Adding task:", { title, content });
     try {
       const response = await axios.post<Task>(
-        'http://localhost:3001/tasks',
+        'http://localhost:3000/api/tasks',
         { title, content, completed: false },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -45,7 +49,7 @@ const App: React.FC = () => {
 
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete<Task>(`http://localhost:3001/tasks/${id}`);
+      await axios.delete<Task>(`http://localhost:3000/api/tasks/${id}`);
       setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -55,7 +59,7 @@ const App: React.FC = () => {
   const updateTask = async (id: string, updatedTask: Partial<Task>) => {
     try {
       const response = await axios.put<Task>(
-        `http://localhost:3001/tasks/${id}`, 
+        `http://localhost:3000/api/tasks/${id}`, 
         updatedTask,
         { headers: { 'Content-Type': 'application/json' } }
       );

@@ -1,0 +1,16 @@
+
+services:
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add your DB connection strings here
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api

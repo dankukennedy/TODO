@@ -11,6 +11,13 @@ dotenv.config();
 
 const app: Application = express();
 app.use(express.json());
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Your Frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Allow cookies if needed
+};
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,4 +32,5 @@ app.use(globalErrorHandler);
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});
+    console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL} || 'http://localhost:5173'}`);
+ });
