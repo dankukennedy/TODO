@@ -31,7 +31,7 @@ const App: React.FC = () => {
     console.log("Adding task:", { title, content });
     try {
       const response = await axios.post<Task>(
-        'http://localhost:3001/tasks', 
+        'http://localhost:3001/tasks',
         { title, content, completed: false },
         { headers: { 'Content-Type': 'application/json' } }
       );
