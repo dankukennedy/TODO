@@ -1,11 +1,15 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "todo",
+  "description": "TODO App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch --experimental-strip-types src/index.ts"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev:build": "npm run build",
+    "dev:start": "npm run start",
+    "power": "node --watch --experimental-strip-types src/index.ts",
+    "dev": "nodemon --watch src --ext ts,json --exec \"npm run dev:build && npm run dev:start\""
   },
   "keywords": [],
   "author": "",

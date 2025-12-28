@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import type { Application, Response, Request } from 'express';
+import connectDB from './db/dbConnect.ts';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+connectDB();
 app.get('/', (req: Request, res: Response) => {
     res.send('API is running...');
 });
