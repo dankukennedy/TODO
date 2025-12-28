@@ -23,13 +23,13 @@ export const findTask = async(): Promise<{success:boolean, message:string ,tasks
     }
 }
 
-export const findTaskById = async(input:TaskIdInput): Promise<{success:boolean,message:string}> => {
+export const findTaskById = async(input:TaskIdInput): Promise<{success:boolean,message:string ,task:InstanceType<typeof Task>}> => {
     try {
         const task = await Task.findById(input.id);
         if (!task) {
-            return { success: false, message: "Task not found" };
+            return { success: false, message: "Task not found", task: null as unknown as InstanceType<typeof Task> };
         }
-        return { success: true, message: "Task found successfully" };
+        return { success: true, message: "Task found successfully", task: task };
     } catch (error:unknown) {
         throw error;
     }
@@ -42,6 +42,19 @@ export const deleteTaskById = async(input:TaskIdInput): Promise<{success:boolean
             return { success: true, message: "Task deleted successfully" };
         }
         return { success: false, message: "Task not found" };
+    } catch (error:unknown) {
+        throw error;
+    }
+}
+
+
+export const deleteTaskBy = async(): Promise<{success:boolean, message:string ,tasks:InstanceType<typeof Task>[]}> => {
+    try {
+        const result = await Task.deleteMany({});
+        if (!result) {
+            return { success: false, message: "Task not found", tasks: [] };
+        }
+        return { success: true, message: " Task deleted successfully", tasks: [] };
     } catch (error:unknown) {
         throw error;
     }

@@ -1,5 +1,5 @@
 import Task from "../model/Task.ts";
-import { createTask,findTask,findTaskById,deleteTaskById,updateTaskById } from "../services/taskService.ts";
+import { createTask,findTask,findTaskById,deleteTaskById,updateTaskById,deleteTaskBy  } from "../services/taskService.ts";
 import { TaskType, TaskId } from "../types/taskType.ts";
 import  type { Request, Response, NextFunction} from "express";
 import { asyncHandler } from "../utils/asyncHandler.ts";
@@ -25,7 +25,7 @@ export const findTaskHandler = asyncHandler(async (req:Request,res:Response) => 
 })
 
 export const findTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.params);
+        const validate = TaskId.parse(req.query);
         const result = await findTaskById(validate);
         if(!result){
             return  res.status(404).json({ success: false, message: "Task not found" });
@@ -34,7 +34,7 @@ export const findTaskByIdHandler =  asyncHandler(async(req:Request, res:Response
 })
 
 export const deleteTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.params);
+        const validate = TaskId.parse(req.query);
         const result = await deleteTaskById(validate);
         if(!result.success){
             return  res.status(404).json({ success: false, message: result.message });
@@ -42,8 +42,16 @@ export const deleteTaskByIdHandler =  asyncHandler(async(req:Request, res:Respon
         return res.status(200).json({ success: true, message: "Task deleted successfully" });
 })
 
+export const deleteTaskByHandler =  asyncHandler(async(req:Request, res:Response) => {
+        const result = await deleteTaskBy();
+        if(!result.success){
+            return  res.status(404).json({ success: false, message: result.message });
+        }
+        return res.status(200).json({ success: true, message: "Task deleted successfully" });
+})
+
 export const updateTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.params);
+        const validate = TaskId.parse(req.query);
         const updateData = req.body;
         const result = await updateTaskById(validate, updateData);
         if(!result.success){
