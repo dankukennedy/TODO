@@ -2,8 +2,9 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // "rootDir": "./src",
+     //"rootDir": "./src",
      "outDir": "./dist",
+     "rootDir": "./src",          // Where your source (.ts) files are located
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
@@ -18,7 +19,7 @@
 
     "moduleResolution": "nodenext",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
+    //"noEmit": true,
     "rewriteRelativeImportExtensions": true,
 
     // Other Outputs
@@ -29,7 +30,7 @@
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    
+    "strictNullChecks": true,
 
     // Style Options
      "noImplicitReturns": true,
