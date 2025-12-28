@@ -10,7 +10,6 @@ const App:React.FC =() =>{
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState<string>('');
 
-
   useEffect(()=>{
     const fetchTasks = async () => {
       try {
