@@ -20,7 +20,7 @@ export const findTaskHandler = asyncHandler(async (req: Request, res: Response) 
 
 export const findTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
   console.log("Params received:", req.query);
-    const validate = TaskId.parse(req.query);
+    const validate = TaskId.parse(req.params);
     const result = await findTaskById(validate);
     if (!result.success) {
         return res.status(404).json(result);
@@ -30,7 +30,7 @@ export const findTaskByIdHandler = asyncHandler(async (req: Request, res: Respon
 
 export const deleteTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
     console.log("Params received:", req.query);
-    const validate = TaskId.parse(req.query);
+    const validate = TaskId.parse(req.params);
     const result = await deleteTaskById(validate);
     if (!result.success) {
         return res.status(404).json(result);

@@ -8,7 +8,7 @@ export const TaskType = z.object({
 export type TaskTypeInput = z.infer<typeof TaskType>;
 
 export const TaskId = z.object({
-    id: z.string().min(1, { message: "ID is required" }),
+    id: z.string().nonempty({ message: "ID is required" }),
 });
 export type TaskIdInput = z.infer<typeof TaskId>;
 
