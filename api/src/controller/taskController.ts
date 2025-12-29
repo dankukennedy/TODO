@@ -1,61 +1,52 @@
-import Task from "../model/Task.ts";
-import { createTask,findTask,findTaskById,deleteTaskById,updateTaskById,deleteTaskBy  } from "../services/taskService.ts";
-import { TaskType, TaskId } from "../types/taskType.ts";
-import  type { Request, Response, NextFunction} from "express";
+import type{ Request, Response } from "express";
+import { createTask, findTask, findTaskById, deleteTaskById, deleteTaskBy, updateTaskById } from "../services/taskService.ts";
+import { TaskType, TaskId, TaskUpdateType } from "../types/taskType.ts";
 import { asyncHandler } from "../utils/asyncHandler.ts";
 
-export const createTaskHandler = asyncHandler(async (req:Request, res:Response) => {
+export const createTaskHandler = asyncHandler(async (req: Request, res: Response) => {
+    // Zod throws error automatically if validation fails; asyncHandler catches it.
     const validate = TaskType.parse(req.body);
-    if(!validate){
-        return res.status(400).json({ error: "Invalid task data" });
-     }
-     const result = await createTask(validate);
-     if(!result){
-        return res.status(400).json({success:false})
-     }
-        return res.status(201).json({success: true, data: result});
-})
+    const result = await createTask(validate);
+    return res.status(201).json(result);
+});
 
-export const findTaskHandler = asyncHandler(async (req:Request,res:Response) => {
+export const findTaskHandler = asyncHandler(async (req: Request, res: Response) => {
     const result = await findTask();
-    if(!result){
-        return  res.status(404).json({ success: false, message: "No tasks found" });
+    if (!result.success) {
+        return res.status(404).json(result);
     }
-    return res.status(200).json({ success: true, data: result });
-})
+    return res.status(200).json(result);
+});
 
-export const findTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.query);
-        const result = await findTaskById(validate);
-        if(!result){
-            return  res.status(404).json({ success: false, message: "Task not found" });
-        }
-        return res.status(200).json({ success: true, data: result });
-})
+export const findTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
+    // Usually, IDs are in req.params (e.g., /tasks/:id)
+    const validate = TaskId.parse(req.params);
+    const result = await findTaskById(validate);
+    if (!result.success) {
+        return res.status(404).json(result);
+    }
+    return res.status(200).json(result);
+});
 
-export const deleteTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.query);
-        const result = await deleteTaskById(validate);
-        if(!result.success){
-            return  res.status(404).json({ success: false, message: result.message });
-        }
-        return res.status(200).json({ success: true, message: "Task deleted successfully" });
-})
+export const deleteTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
+    const validate = TaskId.parse(req.params);
+    const result = await deleteTaskById(validate);
+    if (!result.success) {
+        return res.status(404).json(result);
+    }
+    return res.status(200).json(result);
+});
 
-export const deleteTaskByHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const result = await deleteTaskBy();
-        if(!result.success){
-            return  res.status(404).json({ success: false, message: result.message });
-        }
-        return res.status(200).json({ success: true, message: "Task deleted successfully" });
-})
+export const deleteTaskByHandler = asyncHandler(async (req: Request, res: Response) => {
+    const result = await deleteTaskBy();
+    return res.status(200).json(result);
+});
 
-export const updateTaskByIdHandler =  asyncHandler(async(req:Request, res:Response) => {
-        const validate = TaskId.parse(req.query);
-        const updateData = req.body;
-        const result = await updateTaskById(validate, updateData);
-        if(!result.success){
-            return  res.status(404).json({ success: false, message: result.message });
-        }
-        return res.status(200).json({ success: true, message: "Task updated successfully" });
- })
+export const updateTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
+    const validate = TaskUpdateType.parse({ ...req.params, ...req.body });
+    const result = await updateTaskById(validate);
+    if (!result.success) {
+        return res.status(404).json(result);
+    }
+    return res.status(200).json(result);
+});

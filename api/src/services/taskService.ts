@@ -1,73 +1,51 @@
 import Task from "../model/Task.ts";
-import type { TaskIdInput, TaskTypeInput } from "../types/taskType.ts";
+import type { TaskIdInput, TaskTypeInput, TaskUpdateTypeInput } from "../types/taskType.ts";
 
-export const createTask = async(input:TaskTypeInput): Promise<{success:boolean,newTask:InstanceType<typeof Task>}> => {
-  try {
-    const newTask = await new Task(input);
+export const createTask = async (input: TaskTypeInput) => {
+    const newTask = new Task(input);
     await newTask.save();
-    return { success: true, newTask };
-  } catch (error:unknown) {
-    throw error;
-  }
-}
+    return { success: true, data: newTask };
+};
 
-export const findTask = async(): Promise<{success:boolean, message:string ,tasks:InstanceType<typeof Task>[]}> => {
-    try {
-        const tasks = await Task.find();
-        if(!tasks || tasks.length === 0){
-            return { success: false, message: "No tasks found" ,tasks: []};
-        }
-        return { success: true, message: "Tasks found successfully", tasks };
-    } catch (error:unknown) {
-        throw error;
+export const findTask = async () => {
+    const tasks = await Task.find();
+    if (!tasks || tasks.length === 0) {
+        return { success: false, message: "No tasks found", data: [] };
     }
-}
+    return { success: true, data: tasks };
+};
 
-export const findTaskById = async(input:TaskIdInput): Promise<{success:boolean,message:string ,task:InstanceType<typeof Task>}> => {
-    try {
-        const task = await Task.findById(input.id);
-        if (!task) {
-            return { success: false, message: "Task not found", task: null as unknown as InstanceType<typeof Task> };
-        }
-        return { success: true, message: "Task found successfully", task: task };
-    } catch (error:unknown) {
-        throw error;
-    }
-}
-
-export const deleteTaskById = async(input:TaskIdInput): Promise<{success:boolean, message:string}> => {
-    try {
-        const result = await Task.findByIdAndDelete(input.id);
-        if (result) {
-            return { success: true, message: "Task deleted successfully" };
-        }
+export const findTaskById = async (input: TaskIdInput) => {
+    const task = await Task.findById(input.id); 
+    if (!task) {
         return { success: false, message: "Task not found" };
-    } catch (error:unknown) {
-        throw error;
     }
-}
+    return { success: true, data: task };
+};
 
+export const updateTaskById = async (input: TaskUpdateTypeInput) => {
+    const { id, ...dataToUpdate } = input;
+    const updatedTask = await Task.findByIdAndUpdate(
+        id,
+        dataToUpdate,
+        { new: true, runValidators: true }
+    );
 
-export const deleteTaskBy = async(): Promise<{success:boolean, message:string ,tasks:InstanceType<typeof Task>[]}> => {
-    try {
-        const result = await Task.deleteMany({});
-        if (!result) {
-            return { success: false, message: "Task not found", tasks: [] };
-        }
-        return { success: true, message: " Task deleted successfully", tasks: [] };
-    } catch (error:unknown) {
-        throw error;
-    }
-}
-
-export const updateTaskById = async(input:TaskIdInput, updateData:Partial<TaskTypeInput>): Promise<{success:boolean, title?:string, content?:string, completed?:boolean, message?:string}> => {
-    try {
-        const updatedTask = await Task.findByIdAndUpdate(input.id, updateData, { new: true });
-        if (updatedTask) {
-            return { success: true, title: updatedTask.title, content: updatedTask.content, completed: updatedTask.completed };
-        }
+    if (!updatedTask) {
         return { success: false, message: "Task not found" };
-    } catch (error:unknown) {
-        throw error;
     }
-}
+    return { success: true, data: updatedTask };
+};
+
+export const deleteTaskById = async (input: TaskIdInput) => {
+    const result = await Task.findByIdAndDelete(input.id);
+    if (!result) {
+        return { success: false, message: "Task not found" };
+    }
+    return { success: true, message: "Task deleted successfully" };
+};
+
+export const deleteTaskBy = async () => {
+    await Task.deleteMany({});
+    return { success: true, message: "All tasks deleted successfully" };
+};

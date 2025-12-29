@@ -5,25 +5,27 @@ import { createTaskHandler, deleteTaskByIdHandler,updateTaskByIdHandler,findTask
 //Explicitly typing the router
 const router: Router = express.Router();
 // BLOCK 2: GET all tasks
-router.get("/getTasks", (req: Request, res: Response, next:NextFunction) => {
+
+router.get('/tasks', (req: Request, res: Response, next:NextFunction) => {
    findTaskHandler(req, res, next);
 });
-router.get("/getTaskId/:id", (req: Request, res: Response, next:NextFunction) => {
+
+router.get('/tasks/:id', (req: Request, res: Response, next:NextFunction) => {
    findTaskByIdHandler(req, res, next);
 });
 
-router.post("/tasks",  (req: Request,  res: Response, next:NextFunction) => {
+router.post('/tasks',  (req: Request,  res: Response, next:NextFunction) => {
   createTaskHandler(req, res, next)
 });
 
-router.patch("/updateTasks/:id", (req: Request, res: Response,next:NextFunction) => {
+router.patch('/tasks', (req: Request, res: Response,next:NextFunction) => {
     updateTaskByIdHandler(req, res, next);
 });
 
-router.delete("/deleteTask/:id",  (req: Request, res: Response,next:NextFunction) => {
+router.delete('/tasks/:id',  (req: Request, res: Response,next:NextFunction) => {
       deleteTaskByIdHandler(req, res, next);
 });
-router.delete("/deleteTasks/all",  (req: Request, res: Response,next:NextFunction) => {
+router.delete('/tasks',  (req: Request, res: Response,next:NextFunction) => {
       deleteTaskByHandler(req, res, next);
 });
 
