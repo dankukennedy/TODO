@@ -19,8 +19,8 @@ export const findTaskHandler = asyncHandler(async (req: Request, res: Response) 
 });
 
 export const findTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
-    // Usually, IDs are in req.params (e.g., /tasks/:id)
-    const validate = TaskId.parse(req.params);
+  console.log("Params received:", req.params||req.query);
+    const validate = TaskId.parse(req.params||req.query);
     const result = await findTaskById(validate);
     if (!result.success) {
         return res.status(404).json(result);
@@ -29,7 +29,8 @@ export const findTaskByIdHandler = asyncHandler(async (req: Request, res: Respon
 });
 
 export const deleteTaskByIdHandler = asyncHandler(async (req: Request, res: Response) => {
-    const validate = TaskId.parse(req.params);
+    console.log("Params received:", req.params||req.query);
+    const validate = TaskId.parse(req.params||req.query);
     const result = await deleteTaskById(validate);
     if (!result.success) {
         return res.status(404).json(result);

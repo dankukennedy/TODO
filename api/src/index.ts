@@ -4,7 +4,7 @@ import cors from 'cors';
 import type { Application, Response, Request } from 'express';
 import connectDB from './db/dbConnect.ts';
 import taskRoutes from './route/taskRoute.ts';
-import { globalErrorHandler } from './middleware/errorMiddleware.ts';
+import { globalErrorHandler,globalErrorHandlerZod  } from './middleware/errorMiddleware.ts';
 
 
 dotenv.config();
@@ -28,8 +28,9 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api', taskRoutes);
 app.use(globalErrorHandler);
+app.use(globalErrorHandlerZod);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL} || 'http://localhost:5173'}`);
