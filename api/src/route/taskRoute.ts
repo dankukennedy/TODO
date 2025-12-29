@@ -10,7 +10,7 @@ router.get('/tasks', (req: Request, res: Response, next:NextFunction) => {
    findTaskHandler(req, res, next);
 });
 
-router.get('/tasks/:id', (req: Request, res: Response, next:NextFunction) => {
+router.get(['/tasks/:id','/task'], (req: Request, res: Response, next:NextFunction) => {
    findTaskByIdHandler(req, res, next);
 });
 
