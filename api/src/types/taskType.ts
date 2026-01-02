@@ -12,7 +12,7 @@ export const TaskId = z.object({
 });
 export type TaskIdInput = z.infer<typeof TaskId>;
 
-export const TaskUpdateType = TaskId.merge(
-    TaskType.partial()
+export const TaskUpdateType = TaskId.extend(
+    TaskType.shape
 );
 export type TaskUpdateTypeInput = z.infer<typeof TaskUpdateType>;
